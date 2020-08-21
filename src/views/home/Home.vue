@@ -73,14 +73,15 @@
 
       // 监听图片加载完成
       const refresh = debounce(this.$refs.scroll.refresh, 200)
-      this.$bus.$on('itemImageLoad', () => {
+      this.$bus.$on('homeItemImageLoad', () => {
         refresh()
       })
 
     },
     activated() {
-      this.$refs.scroll.scrollTo(0, this.saveY, 0)
       this.$refs.scroll.refresh()
+      this.$refs.scroll.scrollTo(0, this.saveY, 0)
+
     },
     deactivated() {
       this.saveY = this.$refs.scroll.getScrollY()
