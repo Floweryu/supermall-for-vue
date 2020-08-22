@@ -60,7 +60,7 @@
 <style scoped>
   .bottom-bar {
     height: 40px;
-    background-color: white;
+    background-color: #fff;
     position: relative;
     line-height: 40px;
     display: flex;
@@ -71,7 +71,7 @@
   .check-content {
     display: flex;
     align-items: center;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #fff;
     margin-left: 10px;
   }
   .check-button {
