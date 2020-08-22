@@ -11,7 +11,9 @@
       <goods-list ref="recommends" :goods="recommends"/>
     </scroll>
     <detail-bottom-bar @addCart="addToCart"/>
-    <back-top @click.native="btnClick" v-show="isShowBackTop"></back-top>
+    <back-top @click.native="btnClick" v-show="isShowBackTop"/>
+
+    <toast :message="message" :show="show"/>
   </div>
 </template>
 
@@ -27,6 +29,7 @@
 
   import Scroll from "components/common/scroll/Scroll";
   import GoodsList from "components/content/goods/GoodsList";
+  import Toast from "components/common/toast/Toast"
 
   import {getDetail, Goods, Shop, GoodsParam, getRecommend} from "network/detail";
   import {debounce} from "common/utils";
@@ -43,6 +46,7 @@
       DetailParamInfo,
       DetailCommentInfo,
       DetailBottomBar,
+      Toast,
 
       Scroll,
 
@@ -63,6 +67,8 @@
         themeTopYs: [],
         getThemeTopY: null,
         currentIndex: 0,
+        message: '',
+        show: false
       }
     },
     created() {
@@ -171,9 +177,16 @@
         product.price = this.goods.realPrice
         product.iid = this.iid
 
-        console.log(product);
         // 将商品添加到购物车
-        this.$store.dispatch("addCart", product)
+        this.$store.dispatch("addCart", product).then(res => {
+          this.message = res
+          this.show = true
+
+          setTimeout(() => {
+            this.show = false
+            this.message = ''
+          }, 1500)
+        })
       }
     }
   }
