@@ -10,7 +10,7 @@
       <detail-comment-info ref="comments" :comment-info="commentInfo"/>
       <goods-list ref="recommends" :goods="recommends"/>
     </scroll>
-    <detail-bottom-bar/>
+    <detail-bottom-bar @addCart="addToCart"/>
     <back-top @click.native="btnClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
@@ -71,7 +71,6 @@
 
       // 根据 iid 请求详情数据
       getDetail(this.iid).then(res => {
-
         const data = res.data.result
         // 获取轮播图
         this.topImages = data.itemInfo.topImages
@@ -121,8 +120,6 @@
         this.themeTopYs.push(this.$refs.comments.$el.offsetTop - 44)
         this.themeTopYs.push(this.$refs.recommends.$el.offsetTop - 44)
         this.themeTopYs.push(Number.MAX_VALUE)
-
-        console.log(this.themeTopYs);
       }, 100)
     },
     mounted() {
@@ -131,9 +128,6 @@
       this.$bus.$on('detailItemImageLoad', () => {
         refresh()
       })
-
-    },
-    updated() {
 
     },
     methods: {
@@ -168,7 +162,19 @@
           }
         }
       },
+      addToCart() {
+        // 获取购物车需要展示的信息
+        const product = {}
+        product.image = this.topImages[0]
+        product.title = this.goods.title
+        product.desc = this.goods.desc
+        product.price = this.goods.realPrice
+        product.iid = this.iid
 
+        console.log(product);
+        // 将商品添加到购物车
+        this.$store.dispatch("addCart", product)
+      }
     }
   }
 </script>
